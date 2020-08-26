@@ -22,12 +22,10 @@
 }
 .login-right {
     width: 40%;
-    height: 25vh;
     display: flex;
     flex-direction: column;
     /* flex-wrap: wrap; */
     justify-content: center;
-    margin-top: 15%
 }
 .login-right-inputs {
     margin-left: 16%;
@@ -62,5 +60,8 @@
     transition: 0.2s;
     font-size: 1rem;
     font-weight: 700;
+    text-align: center;
+}
+.login-input-error {
     text-align: center;
 }

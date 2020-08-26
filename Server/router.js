@@ -6,20 +6,26 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const firebase = require('firebase');
 const admin = require('firebase-admin');
+const { auth } = require('firebase');
+const serviceAccount = require('./ServiceAccountKey.json');
 require('@firebase/storage')
 require('dotenv').config();
 //__________________________________________________________________________________________________________________________//
 // Data Base
 
-// const bodyParser = require('body-parser');
-// const config = {
-//     apiKey: 'xxxxxx',
-//     authDomain: 'xxxxxx',
-//     databaseURL: 'xxxxx',
-//     storageBucket: 'xxxxxx',
+const config = {
+    apiKey: "AIzaSyDueJ-kqLC7Bo45DPRcItBY9jbEjziUGcY",
+    authDomain: "smile-400af.firebaseapp.com",
+    databaseURL: "https://smile-400af.firebaseio.com",
+    projectId: "smile-400af",
+    storageBucket: "smile-400af.appspot.com",
     
-//   };
-// firebase.initializeApp(config);
+  };
+firebase.initializeApp(config);
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+})
 // admin.initializeApp({
 //     // credential: admin.credential.applicationDefault(),
 //     // databaseURL: 'https://makan-5c9d1.firebaseio.com',
@@ -90,7 +96,39 @@ app.use(fileMiddleware);
 //___________________________________________________________________________________________________________________________________________
 // end points
 
+app.get('/signup/:email/:password', (req, res) => {
+    const email = req.params.email;
+    const password = req.params.password;
+    const account = email.split('@')[0]
+    const auth = firebase.auth();
+
+    const promise = auth.createUserWithEmailAndPassword(email, password);
+    promise
+        .catch(e => console.log(e.message));
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if (firebaseUser) {
+            const uid = firebaseUser.uid;
+            const additionalClaims = {
+                premiumAccount: true
+            };
+            admin.auth().createCustomToken(uid, additionalClaims)
+                .then(customToken => {
+                    res.json(customToken)
+                })
+                .catch(error => {
+                    res.json(error.message)
+                })
+            // const usersRef = firebase.database().ref().child(`users/${account}`);
+            //         usersRef.set({
+            //             name: 'unknown'
+            //         })
+        } else {
+            console.log('not logged in'); 
+        }
+    })
+})
 
 
+//___________________________________________________________________________________________________________________________________________________
 const port = 3000;
 app.listen(port, () => console.log(`listening on port ${port}!`))
