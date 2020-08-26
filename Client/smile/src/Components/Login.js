@@ -1,5 +1,6 @@
 import React,{useReducer} from 'react';
 import  '../Style/Login.css'
+import LogInImage from '../Images/LoginImage.jpeg'
 
 const Login = () => {
     const [ userIn, setUserIn ] = useReducer(
@@ -27,12 +28,14 @@ const Login = () => {
         <div className="login-wrapper">
             <div className="login-left">
                 <h1>Smile</h1>
+                <img src={LogInImage} alt="image" />
             </div>
             <div className="login-right">
                 <div className="login-right-title">
                     <h3>
                         Let's do it together
                     </h3>
+                    
                 </div>
                 <div className="login-right-wrapper">
                 <div className="login-right-inputs">
