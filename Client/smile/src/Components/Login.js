@@ -19,9 +19,15 @@ const Login = () => {
     }
 
     const logIn = async () => {
-        
-        
-
+        if (userIn.email !== '' && userIn.password !== '') {
+            setInputError(false);
+            await fetch(`http://localhost:3000/login/${userIn.email}/${userIn.password}`)
+                .then(res => res.json())
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        } else {
+            setInputError(true);
+        }
     }
 
     const signUp = async () => {

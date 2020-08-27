@@ -99,7 +99,6 @@ app.use(fileMiddleware);
 app.get('/signup/:email/:password', (req, res) => {
     const email = req.params.email;
     const password = req.params.password;
-    const account = email.split('@')[0]
     const auth = firebase.auth();
 
     const promise = auth.createUserWithEmailAndPassword(email, password);
@@ -113,6 +112,10 @@ app.get('/signup/:email/:password', (req, res) => {
             };
             admin.auth().createCustomToken(uid, additionalClaims)
                 .then(customToken => {
+                    // firebase.auth().signInWithCustomToken(customToken).catch(function(error) {
+                    //     var errorCode = error.code;
+                    //     var errorMessage = error.message;
+                    // })
                     res.json(customToken)
                 })
                 .catch(error => {
@@ -128,7 +131,24 @@ app.get('/signup/:email/:password', (req, res) => {
     })
 })
 
+app.get('/login/:email/:password', (req, res) => {
+    const email = req.params.email;
+    const password = req.params.password;
+    const auth = firebase.auth();
+    const additionalClaims = {
+        premiumAccount: true
+    };
+    const promise = auth.signInWithEmailAndPassword(email, password);
+    promise
+        .then(msg => admin.auth().createCustomToken(msg.user.uid, additionalClaims))
+        .then(customToken => res.json(customToken))
+        .catch(error => res.json(error.message))
+})
+
 
 //___________________________________________________________________________________________________________________________________________________
 const port = 3000;
 app.listen(port, () => console.log(`listening on port ${port}!`))
+
+
+// https://smile-400af.firebaseio.com/name.json?access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTU5ODQ3MDE3OSwiZXhwIjoxNTk4NDczNzc5LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay16a2lkekBzbWlsZS00MDBhZi5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLXpraWR6QHNtaWxlLTQwMGFmLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwidWlkIjoiaUhVWGljb3dzYk4wQmtDUWRVQWdLUmdUclJBMyIsImNsYWltcyI6eyJwcmVtaXVtQWNjb3VudCI6dHJ1ZX19.Z9qjyKCcguMVBteV4gBpv1PjlotPUyc7UK5VpJwVnY3nxZWyn4DIy_qiqQJoymjUdZvKtp_2nukz1_e3PpkB5-l4HSfHpOH8pG3GX3HK3BRYxcl4UpvQOH9tPGv_UQ-lkMaBqZhCr7C9PhQTkH_51UVtjXgzwCb9tRGEpxjb05QVOnZki0O18sS-uusxL6o6Fam5inwOJPB9u-6dtXFFz-bXS6kf9qAuEs1GL_UqFMUKxrB0L-H0RHs0s_lAfYQZSUUsNSoFFEDNdgK2Cl11_bRC-0aQnUxgF-4g_DLhPVaT_EgKg1Ht9VBSvFPMN4Mvfj9n7mRLiNacYWj4_xkhWg
