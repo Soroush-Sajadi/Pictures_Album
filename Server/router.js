@@ -96,6 +96,13 @@ app.use(fileMiddleware);
 //___________________________________________________________________________________________________________________________________________
 // end points
 
+app.get('/', (req, res) => {
+    const rootRef = firebase.database().ref().child('test');
+    rootRef.once('value', snap => {
+    res.json(snap.val());
+})
+})
+
 app.get('/signup/:email/:password', (req, res) => {
     const email = req.params.email;
     const password = req.params.password;
@@ -135,16 +142,41 @@ app.get('/login/:email/:password', (req, res) => {
     const email = req.params.email;
     const password = req.params.password;
     const auth = firebase.auth();
+    const uid ='some-uid';
     const additionalClaims = {
         premiumAccount: true
     };
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise
-        .then(msg => admin.auth().createCustomToken(msg.user.uid, additionalClaims))
+        .then(msg => admin.auth().createCustomToken(uid, additionalClaims))
         .then(customToken => res.json(customToken))
         .catch(error => res.json(error.message))
 })
 
+app.get('/data/:token', (req, res) => {
+    const token = req.params.token;
+    const auth = firebase.auth();
+    auth.signInWithCustomToken(token)
+        .then( () => {
+            console.log('im here')
+            const myRef = firebase.database().ref().child('test')
+            myRef.once('value', snapshot => {
+                console.log(snapshot.val())
+            })
+        })
+    console.log(token);
+})
+
+
+// function authorizeAndQuery(responseData){
+//     firebase.auth().signInWithCustomToken(responseData.token)
+//     .then(function(user_login){
+//       var myRef = firebaseApp.database().ref('test');
+//       myRef.once('value', function(snapshot) {
+//            console.log(snapshot.val());
+//       });
+//     });
+//   } 
 
 //___________________________________________________________________________________________________________________________________________________
 const port = 3000;

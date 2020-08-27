@@ -4,6 +4,7 @@ import LogInImage from '../Images/LoginImage.jpeg'
 
 const Login = () => {
     const [ inputError, setInputError ] = useState(false);
+    const [ token, setToken ] = useState('');
     const [ userIn, setUserIn ] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
@@ -18,12 +19,17 @@ const Login = () => {
         setUserIn({[name]: newValue});
     }
 
+    const sendToken = async(token) => {
+        await fetch(`http://localhost:3000/data/${token}`)
+            .then(() => console.log('its sent'))
+    }
+
     const logIn = async () => {
         if (userIn.email !== '' && userIn.password !== '') {
             setInputError(false);
             await fetch(`http://localhost:3000/login/${userIn.email}/${userIn.password}`)
                 .then(res => res.json())
-                .then(res => console.log(res))
+                .then(res => sendToken(res))
                 .catch(err => console.log(err))
         } else {
             setInputError(true);
@@ -35,12 +41,13 @@ const Login = () => {
             setInputError(false);
             await fetch(`http://localhost:3000/signup/${userIn.email}/${userIn.password}`)
                 .then(res => res.json())
-                .then(res => console.log(res))
+                .then(res => sendToken(res))
                 .catch(err => console.log(err))
         } else {
             setInputError(true);
         }
     }
+
     return(
         <div className="login-wrapper">
             <div className="login-left">
