@@ -115,10 +115,9 @@ app.get('/signup/:email/:password', (req, res) => {
         if (firebaseUser) {
             const uid = firebaseUser.uid;
                 const usersRef = firebase.database().ref().child(`users/${uid}`);
-                usersRef.set ({
-                    name:`unknown`,
-                })
-                return res.json('hi')
+                usersRef.set ([{
+                    name:`Ennia`,
+                }])
         } else {
             res.json('Err'); 
         }
@@ -140,7 +139,7 @@ app.get('/data/:token', (req, res) => {
     const auth = firebase.auth();
     const myRef = firebase.database().ref().child(`users/${token}`)
     myRef.once('value', snapshot => {
-        console.log(snapshot.val())
+        res.json([snapshot.val()])
     })
     
 })
