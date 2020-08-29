@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Redirect } from'react-router-dom';
+import SignOut from './SignOut'
 
 const Profile = () => {
     const [ data, setData ] = useState([]);
@@ -13,14 +14,14 @@ const Profile = () => {
     useEffect(() => {
         sendToken(uid)
     },[])
-    console.log(uid)
     return(
         <div>
             {uid === null ? <Redirect to="/Login"/>
             :
-            <>
-            {data.length !== 0 ? data.map((item, i )=> <p key={i}>{item.name}</p>): null}
-            </>
+            <div className="profile-wrapper">
+                <SignOut />
+                {data.length !== 0 ? data.map((item, i )=> <p key={i}>{item.name}</p>): null}
+            </div>
             }
         </div>
     )

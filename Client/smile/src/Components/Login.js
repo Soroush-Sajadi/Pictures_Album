@@ -5,13 +5,10 @@ import  '../Style/Login.css'
 import SignUpIcon from '../Images/person.svg'
 
 
-const Login = ({getProfileNameRoute}) => {
+const Login = () => {
     const [ inputError, setInputError ] = useState(false);
-    // const [ token, setToken ] = useState('');
     const [ accountError, setLogInError ] = useState(false);
-    const [ signInError, setSignUpError ] = useState(false);
-    const [ uid, setUid ] = useState('');
-    const [ data, setData ] = useState([]);
+    const [ uid, setUid ] = useState(window.localStorage.getItem('uid'));
     const [ userIn, setUserIn ] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
@@ -26,29 +23,20 @@ const Login = ({getProfileNameRoute}) => {
         setUserIn({[name]: newValue});
     }
 
-    const sendToken = async(token) => {
-        setLogInError(false)
-        setSignUpError(false)
-        await fetch(`http://localhost:3000/data/${token}`)
-            .then((res) =>res.json())
-            .then(data => setData({ data } ))
-    }
-
     const logIn = async () => {
         if (userIn.email !== '' && userIn.password !== '') {
             setInputError(false);
             await fetch(`http://localhost:3000/login/${userIn.email}/${userIn.password}`)
                 .then(res => res.json())
-                // .then(res => console.log(res))
-                .then(res => res !== 'Err' ? sendToken(res) && window.localStorage.setItem('uid', `${res}`) : setLogInError(true))
-                // .then(res => sendToken(res))
+                .then(res => res !== 'Err' ? window.localStorage.setItem('uid', `${res}`) : setLogInError(true))
+                .then(res => setUid(res))
         } else {
             setInputError(true);
         }
     }
-    // console.log(data.length !== 0 ? : null)
     return(
         <div className="login-wrapper">
+            {uid !== null ? <Redirect  to={`/`} />: null}
            <MainPageStatic />
             <div className="login-right">
                 <div className="login-right-img">
@@ -77,7 +65,7 @@ const Login = ({getProfileNameRoute}) => {
                     {accountError ? <h3> This account does not exict</h3>: null}
                 </div>
             </div>
-            {data.length !== 0 ? data.data[0].map((item,i) => <Redirect key={i} to={`/`} />): null}
+            
         </div>
     )
 }
