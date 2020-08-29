@@ -4,7 +4,9 @@ import LogInImage from '../Images/LoginImage.jpeg'
 
 const Login = () => {
     const [ inputError, setInputError ] = useState(false);
-    const [ token, setToken ] = useState('');
+    // const [ token, setToken ] = useState('');
+    const [ accountError, setLogInError ] = useState(false);
+    const [ signInError, setSignUpError ] = useState(false);
     const [ userIn, setUserIn ] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
@@ -20,8 +22,10 @@ const Login = () => {
     }
 
     const sendToken = async(token) => {
+        setLogInError(false)
+        setSignUpError(false)
         await fetch(`http://localhost:3000/data/${token}`)
-            .then(() => console.log('its sent'))
+            // .then((res) =>res.json())
     }
 
     const logIn = async () => {
@@ -29,8 +33,9 @@ const Login = () => {
             setInputError(false);
             await fetch(`http://localhost:3000/login/${userIn.email}/${userIn.password}`)
                 .then(res => res.json())
-                .then(res => sendToken(res))
-                .catch(err => console.log(err))
+                .then(res => console.log(res))
+                // .then(res => res !== 'Err' ? sendToken(res) : setLogInError(true))
+                // .then(res => sendToken(res))
         } else {
             setInputError(true);
         }
@@ -41,13 +46,13 @@ const Login = () => {
             setInputError(false);
             await fetch(`http://localhost:3000/signup/${userIn.email}/${userIn.password}`)
                 .then(res => res.json())
-                .then(res => sendToken(res))
+                .then(res => res !=='Err' ? sendToken(res): setSignUpError(true))
                 .catch(err => console.log(err))
         } else {
             setInputError(true);
         }
     }
-
+    console.log(accountError)
     return(
         <div className="login-wrapper">
             <div className="login-left">
@@ -73,6 +78,7 @@ const Login = () => {
                 </div>
                 <div className="login-input-error">
                     {inputError ? <h3> Fill all the blanks </h3> : null }
+                    {accountError ? <h3> This account does not exict</h3>: null}
                 </div>
             </div>
         </div>

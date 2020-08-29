@@ -8,6 +8,7 @@ const firebase = require('firebase');
 const admin = require('firebase-admin');
 const { auth } = require('firebase');
 const serviceAccount = require('./ServiceAccountKey.json');
+const { response } = require('express');
 require('@firebase/storage')
 require('dotenv').config();
 //__________________________________________________________________________________________________________________________//
@@ -107,33 +108,19 @@ app.get('/signup/:email/:password', (req, res) => {
     const email = req.params.email;
     const password = req.params.password;
     const auth = firebase.auth();
-
     const promise = auth.createUserWithEmailAndPassword(email, password);
     promise
-        .catch(e => console.log(e.message));
+        // .catch(e => console.log(e.message));
     firebase.auth().onAuthStateChanged(firebaseUser => {
         if (firebaseUser) {
             const uid = firebaseUser.uid;
-            const additionalClaims = {
-                premiumAccount: true
-            };
-            admin.auth().createCustomToken(uid, additionalClaims)
-                .then(customToken => {
-                    // firebase.auth().signInWithCustomToken(customToken).catch(function(error) {
-                    //     var errorCode = error.code;
-                    //     var errorMessage = error.message;
-                    // })
-                    res.json(customToken)
+                const usersRef = firebase.database().ref().child(`users/${uid}`);
+                usersRef.set ({
+                    name:`unknown`,
                 })
-                .catch(error => {
-                    res.json(error.message)
-                })
-            // const usersRef = firebase.database().ref().child(`users/${account}`);
-            //         usersRef.set({
-            //             name: 'unknown'
-            //         })
+                return res.json('hi')
         } else {
-            console.log('not logged in'); 
+            res.json('Err'); 
         }
     })
 })
@@ -142,29 +129,20 @@ app.get('/login/:email/:password', (req, res) => {
     const email = req.params.email;
     const password = req.params.password;
     const auth = firebase.auth();
-    const uid ='some-uid';
-    const additionalClaims = {
-        premiumAccount: true
-    };
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise
-        .then(msg => admin.auth().createCustomToken(uid, additionalClaims))
-        .then(customToken => res.json(customToken))
-        .catch(error => res.json(error.message))
+        .then(key => res.json(key.user.uid))
+        .catch(() => res.json('Err'))
 })
 
 app.get('/data/:token', (req, res) => {
     const token = req.params.token;
     const auth = firebase.auth();
-    auth.signInWithCustomToken(token)
-        .then( () => {
-            console.log('im here')
-            const myRef = firebase.database().ref().child('test')
-            myRef.once('value', snapshot => {
-                console.log(snapshot.val())
-            })
-        })
-    console.log(token);
+    const myRef = firebase.database().ref().child(`users/${token}`)
+    myRef.once('value', snapshot => {
+        console.log(snapshot.val())
+    })
+    
 })
 
 
@@ -184,3 +162,5 @@ app.listen(port, () => console.log(`listening on port ${port}!`))
 
 
 // https://smile-400af.firebaseio.com/name.json?access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTU5ODQ3MDE3OSwiZXhwIjoxNTk4NDczNzc5LCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay16a2lkekBzbWlsZS00MDBhZi5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInN1YiI6ImZpcmViYXNlLWFkbWluc2RrLXpraWR6QHNtaWxlLTQwMGFmLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwidWlkIjoiaUhVWGljb3dzYk4wQmtDUWRVQWdLUmdUclJBMyIsImNsYWltcyI6eyJwcmVtaXVtQWNjb3VudCI6dHJ1ZX19.Z9qjyKCcguMVBteV4gBpv1PjlotPUyc7UK5VpJwVnY3nxZWyn4DIy_qiqQJoymjUdZvKtp_2nukz1_e3PpkB5-l4HSfHpOH8pG3GX3HK3BRYxcl4UpvQOH9tPGv_UQ-lkMaBqZhCr7C9PhQTkH_51UVtjXgzwCb9tRGEpxjb05QVOnZki0O18sS-uusxL6o6Fam5inwOJPB9u-6dtXFFz-bXS6kf9qAuEs1GL_UqFMUKxrB0L-H0RHs0s_lAfYQZSUUsNSoFFEDNdgK2Cl11_bRC-0aQnUxgF-4g_DLhPVaT_EgKg1Ht9VBSvFPMN4Mvfj9n7mRLiNacYWj4_xkhWg
+
+
