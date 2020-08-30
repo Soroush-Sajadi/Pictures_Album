@@ -11,6 +11,7 @@ const serviceAccount = require('./ServiceAccountKey.json');
 const { response } = require('express');
 require('@firebase/storage')
 require('dotenv').config();
+global.XMLHttpRequest = require("xhr2");
 //__________________________________________________________________________________________________________________________//
 // Data Base
 
@@ -27,6 +28,7 @@ firebase.initializeApp(config);
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 })
+const storage = firebase.storage();
 
 //______________________________________________________________________________________________________________________________________//
 
@@ -104,32 +106,32 @@ app.get('/data/:uid', (req, res) => {
 })
 
 app.post('/update/user/image', (req, res) => {
+    if (req.files) {
     const uid = req.files[0].originalname.split(',')[1];
         const imageName = req.files[0].originalname.split(',')[0];
-        console.log( imageName, uid)
-    //     const uploadImage = storage.ref(`${cathegory}/${imageName}.jpg`).put(req.files[0].buffer)
-    //     uploadImage.on('state_changed',
-    //     (snapshot) => {
+        const uploadImage = storage.ref(`users/${uid}/profile/${imageName}_profile_image.jpg`).put(req.files[0].buffer)
+        uploadImage.on('state_changed',
+        (snapshot) => {
 
-    //     },
-    //     (error) => {
-    //         console.log(error)
-    //     },
-    //     () => {
-    //         storage.ref(`${cathegory}`).child(`${imageName}.jpg`).getDownloadURL().then(downloadURL => {
-    //             if ( downloadURL ) {
-    //                 const usersRef = firebase.database().ref().child(`${cathegory}/${imageIndex}/picture`);
-    //                 usersRef.set(
-    //                     `${downloadURL}`
-    //                 )
-    //             }
-    //         })
-    //         .then(() => res.send('Its done'))
-    //         .catch(() => res.send('something went wrong'))
-    //     });
-    // } else {
-    //     res.send('image only')
-    // }
+        },
+        (error) => {
+            console.log(error)
+        },
+        () => {
+            storage.ref(`users/${uid}/profile`).child(`${imageName}_profile_image.jpg`).getDownloadURL().then(downloadURL => {
+                if ( downloadURL ) {
+                    const usersRef = firebase.database().ref().child(`users/${uid}/0/profileImage`);
+                    usersRef.set(
+                        `${downloadURL}`
+                    )
+                }
+            })
+            .then(() => res.send('Its done'))
+            .catch(() => res.send('something went wrong'))
+        });
+    } else {
+        res.send('image only')
+    }
 })
 
 
