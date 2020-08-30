@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import Signout from '../Images/logout.svg';
+import Signout from '../Images/signout.png';
 import '../Style/SignOutIcon.css'
 
 const SignOut = () => {

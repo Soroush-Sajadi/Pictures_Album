@@ -1,8 +1,10 @@
 import React, {useReducer, useState} from 'react';
+import { Redirect } from 'react-router-dom'
 import MainPageStatic from './MainPageStatic'
 
 const Signup = () => {
     const [ inputError, setInputError ] = useState(false);
+    const [ redirect, setRedirect ] = useState('');
     const [ userIn, setUserIn ] = useReducer(
         (state, newState) => ({...state, ...newState}),
         {
@@ -19,18 +21,29 @@ const Signup = () => {
     }
 
     const signUp = async () => {
-        if (userIn.email !== '' && userIn.password !== '') {
+        if (userIn.email !== '' && userIn.password !== '' && userIn.username !== '') {
             setInputError(false);
-            await fetch(`http://localhost:3000/signup/${userIn.email}/${userIn.password}`)
-                .then(res => res.json())
+            await fetch(`http://localhost:3000/signup/`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                  },
+                body: JSON.stringify ({
+                    email: `${userIn.email}`,
+                    password: `${userIn.password}`,
+                    username: `${userIn.username}`
+                })
+            })
+                .then(res => res.text())
+                .then(res => setRedirect(res))
                 // .then(res => res !=='Err' ? sendToken(res): setSignUpError(true))
-                .catch(err => console.log(err))
         } else {
             setInputError(true);
         }
     }
     return(
         <div className="login-wrapper">
+            {redirect === 'done' ? <Redirect to="/login"/>: null}
             <MainPageStatic />
             <div className="login-right">
                 <div className="login-right-title">

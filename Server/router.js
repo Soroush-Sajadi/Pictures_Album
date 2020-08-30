@@ -51,9 +51,11 @@ app.get('/', (req, res) => {
 })
 })
 
-app.get('/signup/:email/:password', (req, res) => {
-    const email = req.params.email;
-    const password = req.params.password;
+app.post('/signup', (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const username = req.body.username;
+    console.log(username)
     const auth = firebase.auth();
     const promise = auth.createUserWithEmailAndPassword(email, password);
     promise
@@ -63,10 +65,14 @@ app.get('/signup/:email/:password', (req, res) => {
             const uid = firebaseUser.uid;
                 const usersRef = firebase.database().ref().child(`users/${uid}`);
                 usersRef.set ([{
-                    name:`Ennia`,
-                }])
-        } else {
-            res.json('Err'); 
+                    name:`${username}`,
+                }], function (err)  {
+                    if (err) {
+                        res.end('err')
+                    } else {
+                        res.end('done')
+                    }
+                })
         }
     })
 })
@@ -79,6 +85,7 @@ app.get('/login/:email/:password', (req, res) => {
     promise
         .then(key => res.json(key.user.uid))
         .catch(() => res.json('Err'))
+
 })
 
 app.get('/signout', (req, res) => {
@@ -86,14 +93,43 @@ app.get('/signout', (req, res) => {
     res.json('done');
 })
 
-app.get('/data/:token', (req, res) => {
-    const token = req.params.token;
+app.get('/data/:uid', (req, res) => {
+    const token = req.params.uid;
     const auth = firebase.auth();
     const myRef = firebase.database().ref().child(`users/${token}`)
     myRef.once('value', snapshot => {
         res.json([snapshot.val()])
     })
     
+})
+
+app.post('/update/user/image', (req, res) => {
+    const uid = req.files[0].originalname.split(',')[1];
+        const imageName = req.files[0].originalname.split(',')[0];
+        console.log( imageName, uid)
+    //     const uploadImage = storage.ref(`${cathegory}/${imageName}.jpg`).put(req.files[0].buffer)
+    //     uploadImage.on('state_changed',
+    //     (snapshot) => {
+
+    //     },
+    //     (error) => {
+    //         console.log(error)
+    //     },
+    //     () => {
+    //         storage.ref(`${cathegory}`).child(`${imageName}.jpg`).getDownloadURL().then(downloadURL => {
+    //             if ( downloadURL ) {
+    //                 const usersRef = firebase.database().ref().child(`${cathegory}/${imageIndex}/picture`);
+    //                 usersRef.set(
+    //                     `${downloadURL}`
+    //                 )
+    //             }
+    //         })
+    //         .then(() => res.send('Its done'))
+    //         .catch(() => res.send('something went wrong'))
+    //     });
+    // } else {
+    //     res.send('image only')
+    // }
 })
 
 
