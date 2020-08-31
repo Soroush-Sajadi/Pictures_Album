@@ -13,7 +13,9 @@ const SignOut = () => {
     }
     return(
         <div className="sign-out-wrapper">
-            <img src={Signout} alt="sign out" onClick={getSignOut}/>
+            <div>
+                <img src={Signout} alt="sign out" onClick={getSignOut}/>
+            </div>
             {out ? <Redirect to='/Login'/>:null}
         </div>
     )

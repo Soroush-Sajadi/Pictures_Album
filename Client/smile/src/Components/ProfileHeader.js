@@ -4,7 +4,7 @@ import SignOut from './SignOut'
 import '../Style/ProfileHeader.css'
 import userImage from '../Images/userImage.png';
 
-const ProfileHeader = () => {
+const ProfileHeader = ({profileInfo}) => {
     const [ file, setFile ] = useState(null);
     const [ image, setImage ] = useState('');
     const [ progress, setProgess ] = useState(0);
@@ -26,7 +26,7 @@ const ProfileHeader = () => {
     const upDateUserImage = async (id, image) => {
         const url = 'http://localhost:3000/update/user/image/'
         const formData = new FormData();
-        formData.append( 'file', image, ['profile.png', id])
+        formData.append( 'file', image, [`${profileInfo[0][1]}`, id])
         axios.post(url, formData, {
             headers: {'Content-Type': 'application/json'},
             onUploadProgress: (ProgressEvent) => {
@@ -35,6 +35,7 @@ const ProfileHeader = () => {
                 setProgess(progress);
             },
         })
+        .then(res => console.log(res))
     } 
     // useEffect(() => {
     //     if (file !== null) {
@@ -44,8 +45,10 @@ const ProfileHeader = () => {
     // }, [])
     return(
         <div className="profile-header-wrapper">
+            <>
             <SignOut />
-            <img src={image === '' ? userImage: image} alt="user image" onClick={getUserImage} />
+            </>
+            <img className="profile-img" src={profileInfo[0][0] === '' ? userImage: profileInfo[0][0]} alt="user image" onClick={getUserImage} />
             <h4>smile</h4>
             <input style={{display:'none'}} id='selectImage' type="file" onChange={handleChange} />
         </div> 

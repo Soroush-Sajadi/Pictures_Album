@@ -1,5 +1,7 @@
 .sign-out-wrapper img {
-    width : 40px;
-    float:right;
+    width: 5vh;
+    float: right;
     cursor: pointer;
+    margin-top: 4vh;
+    margin-right: 2vh;
 }

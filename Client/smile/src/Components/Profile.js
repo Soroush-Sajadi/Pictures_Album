@@ -17,7 +17,7 @@ const Profile = () => {
     },[])
     return(
         <div>
-            <ProfileHeader />
+            { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )}/>: null}
             {uid === null ? <Redirect to="/Login"/>
             :
             <div className="profile-wrapper">
