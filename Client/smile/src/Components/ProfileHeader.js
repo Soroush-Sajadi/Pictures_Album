@@ -4,7 +4,7 @@ import SignOut from './SignOut'
 import '../Style/ProfileHeader.css'
 import userImage from '../Images/userImage.png';
 
-const ProfileHeader = ({profileInfo, dataIsUpDated}) => {
+const ProfileHeader = ({profileInfo, dataIsUpDated, loadingState}) => {
     const [ file, setFile ] = useState(null);
     const [ image, setImage ] = useState('');
     const [ progress, setProgess ] = useState(0);
@@ -14,12 +14,12 @@ const ProfileHeader = ({profileInfo, dataIsUpDated}) => {
         const file = (e.target.files[0]); 
         setFile(file);
         if (file !== null) {
+            loadingState(true)
             upDateUserImage(window.localStorage.getItem('uid'), file)
         }
     }
 
     const getUserImage =() => {
-        // await fetch (`http://localhost:3000/update/user/image/${uid}/${image}`)
         document.getElementById("selectImage").click()
     }
 
@@ -35,7 +35,7 @@ const ProfileHeader = ({profileInfo, dataIsUpDated}) => {
                 setProgess(progress);
             },
         })
-        .then(res => res.data === 'Its done' ? dataIsUpDated(true): console.log(res))
+        .then(res => res.data === 'Its done' ? dataIsUpDated(true): null)
     } 
     // useEffect(() => {
     //     if (file !== null) {
@@ -56,6 +56,3 @@ const ProfileHeader = ({profileInfo, dataIsUpDated}) => {
 }
 
 export default ProfileHeader;
-
-
-{/* <input type="submit" value="Add Image" onClick={saveData} /> */}
