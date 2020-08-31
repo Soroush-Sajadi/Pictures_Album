@@ -7,6 +7,21 @@ import '../Style/AddImage.css'
 
 const AddImage = () => {
     const [ openAddImageWindow, setOpenAddImageWindow ] = useState(false);
+    const [ file, setFile ] = useState(null);
+
+    const handleChange = e => {
+        const file = (e.target.files[0]); 
+        setFile(file);
+        // if (file !== null) {
+        //     loadingState(true)
+        //     upDateUserImage(window.localStorage.getItem('uid'), file)
+        // }
+        console.log(file)
+    }
+
+    const getUserimage =() => {
+        document.getElementById("selectimage").click()
+    }
 
     const openAddImageFolder = () => {
         setOpenAddImageWindow(!openAddImageWindow)
@@ -20,7 +35,7 @@ const AddImage = () => {
             { openAddImageWindow ? 
             <div className="add-image-window-wrapper">
                 <img className="add-image-window-wrapper-close-image" src={closeIcon} alt="close" onClick={openAddImageFolder}/> 
-                <img className="add-image-window-wrapper-add-img" src={addImageWindow} alt="add image" />
+                <img className="add-image-window-wrapper-add-img" src={addImageWindow} alt="add image" onClick={getUserimage}/>
                 <textarea className="add-image-window-wrapper-description" ></textarea>
                 <input className="add-image-window-wrapper-date" type="date" id="birthday" name="When"/>
                 <input className="add-image-window-wrapper-button" type="submit" value="Save"/>
@@ -28,6 +43,7 @@ const AddImage = () => {
             :
             null
             }
+            <input style={{display:'none'}} id='selectimage' type="file" onChange={handleChange} />
         </div>
     )
 }
