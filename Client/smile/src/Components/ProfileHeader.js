@@ -4,7 +4,7 @@ import SignOut from './SignOut'
 import '../Style/ProfileHeader.css'
 import userImage from '../Images/userImage.png';
 
-const ProfileHeader = ({profileInfo}) => {
+const ProfileHeader = ({profileInfo, dataIsUpDated}) => {
     const [ file, setFile ] = useState(null);
     const [ image, setImage ] = useState('');
     const [ progress, setProgess ] = useState(0);
@@ -35,7 +35,7 @@ const ProfileHeader = ({profileInfo}) => {
                 setProgess(progress);
             },
         })
-        .then(res => console.log(res))
+        .then(res => res.data === 'Its done' ? dataIsUpDated(true): console.log(res))
     } 
     // useEffect(() => {
     //     if (file !== null) {
