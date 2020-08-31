@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Redirect } from'react-router-dom';
 import ReactLoading from 'react-loading';
 import ProfileHeader from '../Components/ProfileHeader';
+import AddImage from '../Components/AddImage';
 import '../Style/Profile.css'
 
 
@@ -35,7 +36,7 @@ const Profile = () => {
     useEffect(() => {
         getData(uid)
     },[])
-    
+
     return(
         <div>
             { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )} dataIsUpDated={dataIsUpDated} loadingState={loadingState}/>: null}
@@ -47,7 +48,8 @@ const Profile = () => {
                      <ReactLoading type="bubbles" color="#146db1" height={'20%'} width={'7%'} />
                 </div>
                 : null}
-                {data.length !== 0 ? data[0].map((item, i )=> <p key={i}>{item.name}</p>): null}
+                {/* {data.length !== 0 ? data[0].map((item, i )=> <p key={i}>{item.name}</p>): null} */}
+                <AddImage />
             </div>
             }
         </div>

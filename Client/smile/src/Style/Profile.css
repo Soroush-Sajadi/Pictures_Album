@@ -1,4 +1,9 @@
 .profile-loading {
+    /* width: 100%; */
+    /* height: 20%; */
     display: flex;
     justify-content: center;
+}
+.profile-add-image{
+    cursor: pointer;
 }

@@ -1,0 +1,21 @@
+.add-image-window-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+}
+.add-image-window-wrapper-close-image{
+    width: 5vh;
+}
+.add-image-window-wrapper-add-img {
+    width: 14vh;
+}
+.add-image-window-wrapper-description {
+    width: 45vh;
+    height: 17vh;
+}
+.add-image-window-wrapper-date {
+    width: 30vh;
+    height: 6vh;
+}
