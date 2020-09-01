@@ -6,7 +6,7 @@ import closeIcon from '../Images/close.svg'
 import '../Style/AddImage.css'
 
 
-const AddImage = ({profileName, numberOfImages}) => {
+const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) => {
     const [ openAddImageWindow, setOpenAddImageWindow ] = useState(false);
     const [ file, setFile ] = useState(null);
     const [ selectedImage, setSelectedImage] = useState(null)
@@ -35,12 +35,12 @@ const AddImage = ({profileName, numberOfImages}) => {
         axios.post(url, formData, {
             headers: {'Content-Type': 'application/json'},
         })
-        // .then(res => res.data === 'Its done' ? dataIsUpDated(true): null)
+        .then(res => res.data === 'Its done' ? dataIsUpDated(true): null)
     }
 
     const postImage = () => {
         if (file !== null) {
-            // loadingState(true)
+            loadingState(true)
             fetchImage(window.localStorage.getItem('uid'), file);
             setFile(null);
             setSelectedImage(null)

@@ -36,7 +36,7 @@ const Profile = () => {
     useEffect(() => {
         getData(uid)
     },[])
-    // console.log(data.length !== 0 ? data[0][0].images.length:null)
+    console.log(data.length !== 0 ? data[0]:null)
     return(
         <div>
             { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )} dataIsUpDated={dataIsUpDated} loadingState={loadingState}/>: null}
@@ -47,9 +47,16 @@ const Profile = () => {
                 <div className="profile-loading">
                      <ReactLoading type="bubbles" color="#146db1" height={'20%'} width={'7%'} />
                 </div>
-                : null}
+                : 
+                null}
                 {/* {data.length !== 0 ? data[0].map((item, i )=> <p key={i}>{item.name}</p>): null} */}
-                { data.length !== 0 ? <AddImage profileName={ data[0].map(item => item.name )} numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) }/>: null}
+                { data.length !== 0 ? <AddImage 
+                profileName={ data[0].map(item => item.name )} 
+                numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) } 
+                dataIsUpDated={dataIsUpDated} 
+                loadingState={loadingState}/>
+                : 
+                null}
             </div>
             }
         </div>
