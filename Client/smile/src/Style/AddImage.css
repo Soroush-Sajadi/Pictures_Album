@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     padding: 8vh 0;
-    margin: 0 37vh;
+    margin: 0 32vh;
     background-color: #146db1;
     border: outset;
     border-radius: 10px;
@@ -14,7 +14,8 @@
     cursor: pointer;
 }
 .add-image-window-wrapper-add-img {
-    width: 14vh;
+    width: 13vh;
+    height: 13vh;
     margin-top: 2vh;
     cursor: pointer;
     border-radius: 7px;
