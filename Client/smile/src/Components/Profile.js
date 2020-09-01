@@ -3,6 +3,7 @@ import { Redirect } from'react-router-dom';
 import ReactLoading from 'react-loading';
 import ProfileHeader from '../Components/ProfileHeader';
 import AddImage from '../Components/AddImage';
+import RenderingImages from '../Components/RenderingImages';
 import '../Style/Profile.css'
 
 
@@ -36,7 +37,6 @@ const Profile = () => {
     useEffect(() => {
         getData(uid)
     },[])
-    console.log(data.length !== 0 ? data[0]:null)
     return(
         <div>
             { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )} dataIsUpDated={dataIsUpDated} loadingState={loadingState}/>: null}
@@ -45,20 +45,21 @@ const Profile = () => {
             <div className="profile-wrapper">
                 {loading ?
                 <div className="profile-loading">
-                     <ReactLoading type="bubbles" color="#146db1" height={'20%'} width={'7%'} />
+                     <ReactLoading type="bubbles" color="#146db1" style = { {position: "fixed",height:'20%' ,width:'7%' }}/>
                 </div>
                 : 
                 null}
                 {/* {data.length !== 0 ? data[0].map((item, i )=> <p key={i}>{item.name}</p>): null} */}
                 { data.length !== 0 ? <AddImage 
-                profileName={ data[0].map(item => item.name )} 
-                numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) } 
-                dataIsUpDated={dataIsUpDated} 
-                loadingState={loadingState}/>
+                    profileName={ data[0].map(item => item.name )} 
+                    numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) } 
+                    dataIsUpDated={dataIsUpDated} 
+                    loadingState={loadingState}/>
                 : 
                 null}
             </div>
             }
+            {data.length !== 0 ? <RenderingImages data={data[0].map(item => item.images)}/> : null } 
         </div>
     )
 }

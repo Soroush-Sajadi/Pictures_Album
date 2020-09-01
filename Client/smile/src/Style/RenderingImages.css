@@ -1,0 +1,18 @@
+/* .rendering-images {
+    display: flex;
+
+} */
+.rendering-images-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 10vh;
+}
+.rendering-images {
+    margin-right: 3vh;
+    
+}
+.rendering-images img {
+    width: 40vh;
+    height: 36vh;
+}

@@ -35,7 +35,7 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
         axios.post(url, formData, {
             headers: {'Content-Type': 'application/json'},
         })
-        .then(res => res.data === 'Its done' ? dataIsUpDated(true): null)
+        .then(res => res.data === 'Its done' ? dataIsUpDated(true) || setOpenAddImageWindow(!openAddImageWindow) : null)
     }
 
     const postImage = () => {
@@ -43,7 +43,6 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
             loadingState(true)
             fetchImage(window.localStorage.getItem('uid'), file);
             setFile(null);
-            setSelectedImage(null)
         }
         
     }
