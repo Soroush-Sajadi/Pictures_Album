@@ -10,9 +10,29 @@
 }
 .rendering-images {
     margin-right: 3vh;
+    margin-top: 3vh;
+    border: 0.2vh solid black;
+    padding: 2vh;
     
+}
+.rendering-images h3{
+    font-size:2vh
+}
+.rendering-images h4 {
+    font-size: 2vh
 }
 .rendering-images img {
     width: 40vh;
     height: 36vh;
+}
+.rendering-images-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+.rendering-images-buttons input {
+    width: 9vh;
+    height: 4vh;
+    background-color:#146db1;
+    color: white;
+    font-size: 2vh
 }
