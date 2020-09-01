@@ -36,7 +36,7 @@ const Profile = () => {
     useEffect(() => {
         getData(uid)
     },[])
-
+    // console.log(data.length !== 0 ? data[0][0].images.length:null)
     return(
         <div>
             { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )} dataIsUpDated={dataIsUpDated} loadingState={loadingState}/>: null}
@@ -49,7 +49,7 @@ const Profile = () => {
                 </div>
                 : null}
                 {/* {data.length !== 0 ? data[0].map((item, i )=> <p key={i}>{item.name}</p>): null} */}
-                <AddImage />
+                { data.length !== 0 ? <AddImage profileName={ data[0].map(item => item.name )} numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) }/>: null}
             </div>
             }
         </div>

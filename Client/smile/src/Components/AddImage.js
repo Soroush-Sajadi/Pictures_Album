@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import addImage from '../Images/addImage.png'
 import addImageWindow from '../Images/addImageWindow.png'
 import closeIcon from '../Images/close.svg'
 import '../Style/AddImage.css'
 
 
-const AddImage = () => {
+const AddImage = ({profileName, numberOfImages}) => {
     const [ openAddImageWindow, setOpenAddImageWindow ] = useState(false);
     const [ file, setFile ] = useState(null);
     const [ selectedImage, setSelectedImage] = useState(null)
@@ -13,12 +14,8 @@ const AddImage = () => {
     const handleChange = e => {
         const file = (e.target.files[0]); 
         setFile(file);
-       
-        // if (file !== null) {
-        //     loadingState(true)
-        //     upDateUserImage(window.localStorage.getItem('uid'), file)
-        // }
         setSelectedImage(URL.createObjectURL(file))
+        
     }
 
     const getUserimage =() => {
@@ -30,8 +27,26 @@ const AddImage = () => {
         setFile(null);
         setSelectedImage(null)
     }
-    console.log(selectedImage)
 
+    const fetchImage = async (id, image) => {
+        const url = 'http://localhost:3000/add/user/image/'
+        const formData = new FormData();
+        formData.append( 'file', image, [`${profileName[0]}`, id, numberOfImages[0]])
+        axios.post(url, formData, {
+            headers: {'Content-Type': 'application/json'},
+        })
+        // .then(res => res.data === 'Its done' ? dataIsUpDated(true): null)
+    }
+
+    const postImage = () => {
+        if (file !== null) {
+            // loadingState(true)
+            fetchImage(window.localStorage.getItem('uid'), file);
+            setFile(null);
+            setSelectedImage(null)
+        }
+        
+    }
     return(
         <div className="add-image-wrapper">
             <div>
@@ -43,7 +58,7 @@ const AddImage = () => {
                 <img className="add-image-window-wrapper-add-img" src={file === null ?addImageWindow: selectedImage} alt="add image" onClick={getUserimage}/>
                 <textarea className="add-image-window-wrapper-description" ></textarea>
                 <input className="add-image-window-wrapper-date" type="date" id="birthday" name="When"/>
-                <input className="add-image-window-wrapper-button" type="submit" value="Save"/>
+                <input className="add-image-window-wrapper-button" type="submit" value="Save" onClick={postImage}/>
             </div>
             :
             null
