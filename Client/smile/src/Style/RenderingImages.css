@@ -21,10 +21,19 @@
 .rendering-images h4 {
     font-size: 2vh
 }
-.rendering-images img {
+.rendering-images-image {
     width: 40vh;
     height: 36vh;
-}
+     /* position:absolute;
+    top:0; 
+    left:0; */
+    position:relative; 
+    top:0; 
+    left:0
+} 
+/* .rendering-images img:after {
+    background:rgba(0,0,0,0.6);
+} */
 .rendering-images-buttons {
     display: flex;
     justify-content: space-between;
@@ -36,3 +45,24 @@
     color: white;
     font-size: 2vh
 }
+.rendering-images-icons {
+   
+    position: absolute;
+    display: inline-grid;
+    margin-left: -38vh;
+    margin-top: 10vh;
+
+}
+.rendering-images-icon {
+    width: 6vh;
+    height: 6vh;
+    border: .2vh solid black;
+    border-radius: 50%;
+    padding: 0.5vh;
+    /* position:absolute;
+     top:50%; 
+     left: 50%; 
+     transform: translate(-50%, -50%) */
+
+}
+
