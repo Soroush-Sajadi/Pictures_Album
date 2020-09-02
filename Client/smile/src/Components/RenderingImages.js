@@ -16,6 +16,15 @@ const RenderingImages = ({data}) => {
             setGetIndex(e.target.getAttribute('index'))
         }
     };
+    const showMenu =(e) => {
+        const id = e.target.getAttribute('value')
+        document.getElementById(`${id}`).style.display = "inline-grid";
+        // console.log('asd')
+    }
+    const fadeMenu = (e) => {
+        const id = e.target.getAttribute('value')
+        document.getElementById(`${id}`).style.display = "none";
+    }
     console.log(getIndex)
     return(
         <div className="rendering-images-wrapper">
@@ -24,13 +33,13 @@ const RenderingImages = ({data}) => {
             {data[0].map((item , i) => 
             item !== null ?
                 <div key={i} className="rendering-images">
-                    <div>
-                        <img className="rendering-images-image" src={item.image} alt="image" />
-                        <span className="rendering-images-icons">
-                            <img className="rendering-images-icon" src={deleteIcon} alt="delete" />
+                    <div value={i} onMouseEnter={showMenu} onMouseLeave={fadeMenu}>
+                        <img className="rendering-images-image" value={i} src={item.image} alt="image" onMouseEnter={showMenu} onMouseLeave={fadeMenu} />
+                        <div style={{display: "none"}}  id={i} className="rendering-images-icons">
+                            <img className="rendering-images-icon" src={deleteIcon} alt="delete"  />
                             <img className="rendering-images-icon" src={updateIcon} alt="update" />
                             <img className="rendering-images-icon" src={fullscreenIcon} alt="full screen" />
-                        </span>
+                        </div>
                         
                     </div>
                     <h3>{item.date}</h3>
