@@ -172,6 +172,26 @@ app.post('/add/user/image', (req, res) => {
     }
 })
 
+app.get('/delete/user/image/:uid/:imageIndex/:imageName', (req, res) => {
+    const uid = req.params.uid;
+    const imageIndex = req.params.imageIndex;
+    const imageName = req.params.imageName;
+    // const reg = /(^\F).*\g/;
+    // const image = imageUrl.match(reg);
+    console.log(uid, imageIndex, imageName);
+    // const deleteImage = storage.ref(`users/${uid}/${name}.jpg` ).delete();
+    // deleteImage.then(() => {
+    //     const deleteData = firebase.database().ref().child(`${cathegory}/${number}`)
+    //         deleteData.remove().then(() => {
+    //             res.json('Its done')
+    //         }).catch(error => {
+    //             res.json(error.message)
+    //         })
+    //     }).catch(error => {
+    //         res.json(error.message)
+    //     })
+})
+
 
 //___________________________________________________________________________________________________________________________________________________
 const port = 3000;

@@ -7,13 +7,20 @@ import '../Style/RenderingImages.css'
 
 const RenderingImages = ({data}) => {
     const [  getIndex, setGetIndex ] = useState('empty');
+    const [  getImageName, setGetImageName ] = useState('')
 
     // const updateIndex = (chidData) => {
     //     setGetIndex(chidData)
     // }
     const deleteImage = (e) => {
         if (window.confirm('Are sure you want to delete this photo?')) {
+            // Find a better solution later for the Regex.
+            const reg = /\F([^\F]+)[\F]?jpg/;
+            const url =(e.target.getAttribute('imageUrl'))
+            const nameOfImage = (url.match(reg))[0].split('F')[1]
             setGetIndex(e.target.getAttribute('index'))
+            setGetImageName(nameOfImage)
+            // document.getElementById(`${getIndex }` ).style.display = "none";
         }
     };
     const showMenu = async(e) => {
@@ -27,7 +34,6 @@ const RenderingImages = ({data}) => {
             document.getElementById(`${id}`).style.display = "none";
          }
     }
-    console.log(getIndex)
     return(
         <div className="rendering-images-wrapper">
             {data[0] !== undefined ?
@@ -38,9 +44,9 @@ const RenderingImages = ({data}) => {
                     <div className="rendering-image" value={i} onMouseEnter={showMenu} onMouseLeave={fadeMenu}>
                         <img className="rendering-images-image" value={i} src={item.image} alt="image"  />
                         <div style={{display: "none"}}  id={i} className="rendering-images-icons">
-                            <img className="rendering-images-icon" src={deleteIcon} alt="delete"  />
-                            <img className="rendering-images-icon" src={updateIcon} alt="update" />
-                            <img className="rendering-images-icon" src={fullscreenIcon} alt="full screen" />
+                            <img index={i-1} imageUrl={item.image} className="rendering-images-icon" src={deleteIcon} alt="delete" onClick={deleteImage} />
+                            <img index={i-1} className="rendering-images-icon" src={updateIcon} alt="update" />
+                            <img index={i-1} className="rendering-images-icon" src={fullscreenIcon} alt="full screen" />
                         </div>
                         
                     </div>
@@ -57,9 +63,10 @@ const RenderingImages = ({data}) => {
             </>
             :null
             }
-            <DeleteImage selectedIndex = {getIndex} />
+            <DeleteImage selectedIndex = {getIndex} getImageName={getImageName} />
         </div>
     )
 }
 
 export default RenderingImages;
+
