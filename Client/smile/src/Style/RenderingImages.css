@@ -13,8 +13,15 @@
     margin-top: 3vh;
     border: 0.2vh solid black;
     padding: 2vh;
+    overflow: hidden;
     
 }
+.rendering-image {
+    transition: transform .5s ease;
+}
+.rendering-image:hover {
+    transform: scale(1.5);
+} 
 .rendering-images h3{
     font-size:2vh
 }
@@ -29,8 +36,12 @@
     left:0; */
     position:relative; 
     top:0; 
-    left:0
-} 
+    left:0;
+    
+}
+/* .rendering-images-image:hover { */
+    /* transform: scale(1.5); */
+  /* } */
 /* .rendering-images img:after {
     background:rgba(0,0,0,0.6);
 } */
@@ -49,20 +60,27 @@
    
     position: absolute;
     display: inline-grid;
-    margin-left: -38vh;
+    margin-left: -33vh;
     margin-top: 10vh;
 
 }
 .rendering-images-icon {
-    width: 6vh;
-    height: 6vh;
+    width: 5vh;
+    height: 5vh;
     border: .2vh solid black;
     border-radius: 50%;
     padding: 0.5vh;
+    margin-top: .5vh;
+    cursor: pointer;
     /* position:absolute;
      top:50%; 
      left: 50%; 
      transform: translate(-50%, -50%) */
 
 }
-
+.img-hover-zoom img {
+   
+  }
+  
+  /* [3] Finally, transforming the image when container gets hovered */
+ 

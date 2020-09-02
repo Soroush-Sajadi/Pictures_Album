@@ -16,14 +16,16 @@ const RenderingImages = ({data}) => {
             setGetIndex(e.target.getAttribute('index'))
         }
     };
-    const showMenu =(e) => {
-        const id = e.target.getAttribute('value')
+    const showMenu = async(e) => {
+        const id = await e.target.getAttribute('value')
         document.getElementById(`${id}`).style.display = "inline-grid";
         // console.log('asd')
     }
-    const fadeMenu = (e) => {
-        const id = e.target.getAttribute('value')
-        document.getElementById(`${id}`).style.display = "none";
+    const fadeMenu = async (e) => {
+         const id = await e.target.getAttribute('value')
+         if (id !== null) {
+            document.getElementById(`${id}`).style.display = "none";
+         }
     }
     console.log(getIndex)
     return(
@@ -33,8 +35,8 @@ const RenderingImages = ({data}) => {
             {data[0].map((item , i) => 
             item !== null ?
                 <div key={i} className="rendering-images">
-                    <div value={i} onMouseEnter={showMenu} onMouseLeave={fadeMenu}>
-                        <img className="rendering-images-image" value={i} src={item.image} alt="image" onMouseEnter={showMenu} onMouseLeave={fadeMenu} />
+                    <div className="rendering-image" value={i} onMouseEnter={showMenu} onMouseLeave={fadeMenu}>
+                        <img className="rendering-images-image" value={i} src={item.image} alt="image"  />
                         <div style={{display: "none"}}  id={i} className="rendering-images-icons">
                             <img className="rendering-images-icon" src={deleteIcon} alt="delete"  />
                             <img className="rendering-images-icon" src={updateIcon} alt="update" />
