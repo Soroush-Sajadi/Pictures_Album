@@ -137,12 +137,11 @@ app.post('/update/user/image', (req, res) => {
 
 app.post('/add/user/image', (req, res) => {
     if (req.files) {
-        console.log(req.files[0], uuidv4())
         const imageCode = uuidv4();
         const uid = req.files[0].originalname.split(',')[1];
         const imageName = req.files[0].originalname.split(',')[0] + imageCode;
         const index = req.files[0].originalname.split(',')[2];
-        console.log(uid, imageName, index)
+        // console.log(uid, imageName, index)
         const uploadImage = storage.ref(`users/${uid}/images/${imageName}.jpg`).put(req.files[0].buffer)
         uploadImage.on('state_changed',
         (snapshot) => {
@@ -154,13 +153,14 @@ app.post('/add/user/image', (req, res) => {
         () => {
             storage.ref(`users/${uid}/images`).child(`${imageName}.jpg`).getDownloadURL().then(downloadURL => {
                 if ( downloadURL ) {
-                    const usersRef = firebase.database().ref().child(`users/${uid}/0/images/${index}`);
-                    usersRef.set({
+                    const usersRef = firebase.database().ref().child(`users/${uid}/0/images/`);
+                    const newChildRef = usersRef.push();
+                    newChildRef.set([{
                         image: `${downloadURL}`,
                         description: 'fake',
                         date:'2222/22/22'
                     }
-                        
+                    ]   
                     )
                 }
             })
@@ -172,24 +172,24 @@ app.post('/add/user/image', (req, res) => {
     }
 })
 
-app.get('/delete/user/image/:uid/:imageIndex/:imageName', (req, res) => {
+app.get('/delete/user/image/:uid/:imageId/:imageName', (req, res) => {
     const uid = req.params.uid;
-    const imageIndex = req.params.imageIndex;
+    const imageId = req.params.imageId;
     const imageName = req.params.imageName;
     // const reg = /(^\F).*\g/;
     // const image = imageUrl.match(reg);
-    console.log(uid, imageIndex, imageName);
-    // const deleteImage = storage.ref(`users/${uid}/${name}.jpg` ).delete();
-    // deleteImage.then(() => {
-    //     const deleteData = firebase.database().ref().child(`${cathegory}/${number}`)
-    //         deleteData.remove().then(() => {
-    //             res.json('Its done')
-    //         }).catch(error => {
-    //             res.json(error.message)
-    //         })
-    //     }).catch(error => {
-    //         res.json(error.message)
-    //     })
+    console.log(uid, imageId, imageName);
+    const deleteImage = storage.ref(`users/${uid}/images/${imageName}`).delete();
+    deleteImage.then(() => {
+        const deleteData = firebase.database().ref().child(`users/${uid}/0/images/${imageId}`)
+            deleteData.remove().then(() => {
+                res.json('Its done')
+            }).catch(error => {
+                res.json(error.message)
+            })
+        }).catch(error => {
+            res.json(error.message)
+        })
 })
 
 

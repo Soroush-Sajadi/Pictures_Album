@@ -1,19 +1,18 @@
 import React, {useEffect} from 'react';
 
-const DeleteImage = ({selectedIndex, getImageName }) => {
+const DeleteImage = ({selectedImageId, getImageName, dataIsUpDatedSecondChild, deleteImageState }) => {
 
-    const deleteSelectedImage = async (uid, imageIndex, imageName) => {
+    const deleteSelectedImage = async (uid, imageId, imageName) => {
         
-        await fetch(`http://localhost:3000/delete/user/image/${uid}/${imageIndex}/${imageName}`)
+        await fetch(`http://localhost:3000/delete/user/image/${uid}/${imageId}/${imageName}`)
+            .then(res => res.json())
+            .then(res => res === 'Its done' ? dataIsUpDatedSecondChild(true) : console.log('some thing went wrong!'));
 
     }
     useEffect(() => {
-        if (Number.isInteger(Number(selectedIndex))) {
             // const imageInfo = `${selectedIndex,getImageUrl}`
-            deleteSelectedImage(window.localStorage.getItem('uid'),selectedIndex, getImageName)
-        } else {
-            return;
-        }
+            deleteSelectedImage(window.localStorage.getItem('uid'),selectedImageId, getImageName)
+            deleteImageState(false)
     })
     return (
         <>

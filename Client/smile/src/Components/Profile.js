@@ -21,10 +21,24 @@ const Profile = () => {
         setLoading(childData);
     }
 
+    // const filter = (data) => {
+    //    if (data !== undefined) {
+           
+    //      data[0].images.map((item, i)=> {
+             
+    //         if (item === null) {
+    //              data[0].images.splice(i, 1);
+    //              console.log(data[0])
+    //         }
+    //     })
+    // }
+       
+    // }
+
     const getData = async(id) => {
         await fetch(`http://localhost:3000/data/${id}`)
             .then((res) =>res.json())
-            .then(data => setData( data ) || setLoading(false))
+            .then(data => setData( data ) || setLoading(false) )
     }
 
     useEffect(() => {
@@ -37,6 +51,7 @@ const Profile = () => {
     useEffect(() => {
         getData(uid)
     },[])
+    // console.log(data)
     return(
         <div>
             { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )} dataIsUpDated={dataIsUpDated} loadingState={loadingState}/>: null}
@@ -50,16 +65,17 @@ const Profile = () => {
                 : 
                 null}
                 {/* {data.length !== 0 ? data[0].map((item, i )=> <p key={i}>{item.name}</p>): null} */}
-                { data.length !== 0 ? <AddImage 
-                    profileName={ data[0].map(item => item.name )} 
-                    numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) } 
-                    dataIsUpDated={dataIsUpDated} 
-                    loadingState={loadingState}/>
-                : 
-                null}
+                { data.length !== 0 ? 
+                    <AddImage 
+                        profileName={ data[0].map(item => item.name )} 
+                        numberOfImages={ data[0].map(item => item.images === undefined ? '0' : `${data[0][0].images.length}`) } 
+                        dataIsUpDated={dataIsUpDated} 
+                        loadingState={loadingState}/>
+                    :
+                    null}
             </div>
             }
-            {data.length !== 0 ? <RenderingImages data={data[0].map(item => item.images)}/> : null } 
+            {data.length !== 0 ? <RenderingImages data={data[0].map(item => item.images)} dataIsUpDated={dataIsUpDated}/> : null } 
         </div>
     )
 }
