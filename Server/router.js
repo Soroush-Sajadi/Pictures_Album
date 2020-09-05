@@ -140,8 +140,9 @@ app.post('/add/user/image', (req, res) => {
         const imageCode = uuidv4();
         const uid = req.files[0].originalname.split(',')[1];
         const imageName = req.files[0].originalname.split(',')[0] + imageCode;
-        const index = req.files[0].originalname.split(',')[2];
-        // console.log(uid, imageName, index)
+        const imageTitle = req.files[0].originalname.split(',')[2];
+        const imageDate = req.files[0].originalname.split(',')[3];
+        console.log('asdasa',imageTitle, imageDate)
         const uploadImage = storage.ref(`users/${uid}/images/${imageName}.jpg`).put(req.files[0].buffer)
         uploadImage.on('state_changed',
         (snapshot) => {
@@ -157,8 +158,8 @@ app.post('/add/user/image', (req, res) => {
                     const newChildRef = usersRef.push();
                     newChildRef.set([{
                         image: `${downloadURL}`,
-                        description: 'fake',
-                        date:'2222/22/22'
+                        description: `${imageTitle}`,
+                        date:`${imageDate}`
                     }
                     ]   
                     )
@@ -176,9 +177,6 @@ app.get('/delete/user/image/:uid/:imageId/:imageName', (req, res) => {
     const uid = req.params.uid;
     const imageId = req.params.imageId;
     const imageName = req.params.imageName;
-    // const reg = /(^\F).*\g/;
-    // const image = imageUrl.match(reg);
-    console.log(uid, imageId, imageName);
     const deleteImage = storage.ref(`users/${uid}/images/${imageName}`).delete();
     deleteImage.then(() => {
         const deleteData = firebase.database().ref().child(`users/${uid}/0/images/${imageId}`)

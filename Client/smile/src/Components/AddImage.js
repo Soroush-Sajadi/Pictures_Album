@@ -9,13 +9,23 @@ import '../Style/AddImage.css'
 const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) => {
     const [ openAddImageWindow, setOpenAddImageWindow ] = useState(false);
     const [ file, setFile ] = useState(null);
-    const [ selectedImage, setSelectedImage] = useState(null)
+    const [ selectedImage, setSelectedImage] = useState(null);
+    const [ selectedImageTitle, setSelectedImageTitle ] = useState('');
+    const [ selectedImageDate, setSelectedImageDate ] = useState('');
+    
 
     const handleChange = e => {
         const file = (e.target.files[0]); 
         setFile(file);
         setSelectedImage(URL.createObjectURL(file))
-        
+    }
+
+    const getImageTitle = e => {
+        setSelectedImageTitle(e.target.value);
+    }
+
+    const getImageDate = e => {
+        setSelectedImageDate(e.target.value)
     }
 
     const getUserimage =() => {
@@ -28,10 +38,10 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
         setSelectedImage(null)
     }
 
-    const fetchImage = async (id, image) => {
+    const fetchImage = async (id, image, userName, imageTitle, imageDate) => {
         const url = 'http://localhost:3000/add/user/image/'
         const formData = new FormData();
-        formData.append( 'file', image, [`${profileName[0]}`, id, numberOfImages[0]])
+        formData.append( 'file', image, [userName, id, imageTitle, imageDate])
         axios.post(url, formData, {
             headers: {'Content-Type': 'application/json'},
         })
@@ -39,9 +49,9 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
     }
 
     const postImage = () => {
-        if (file !== null) {
+        if (file !== null && selectedImageTitle !== '' && selectedImageDate !== '') {
             loadingState(true)
-            fetchImage(window.localStorage.getItem('uid'), file);
+            fetchImage(window.localStorage.getItem('uid'), file,`${profileName[0]}`, selectedImageTitle, selectedImageDate);
             
         }
         
@@ -55,8 +65,8 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
             <div className="add-image-window-wrapper">
                 <img className="add-image-window-wrapper-close-image" src={closeIcon} alt="close" onClick={openAddImageFolder}/> 
                 <img className="add-image-window-wrapper-add-img" src={file === null ?addImageWindow: selectedImage} alt="add image" onClick={getUserimage}/>
-                <input type="text" className="add-image-window-wrapper-description" placeholder='Title' ></input>
-                <input className="add-image-window-wrapper-date" type="date" id="birthday" name="When"/>
+                <input type="text" className="add-image-window-wrapper-description" placeholder='Title' onChange={getImageTitle}/>
+                <input className="add-image-window-wrapper-date" type="date" id="birthday" name="When" onChange={getImageDate}/>
                 <input className="add-image-window-wrapper-button" type="submit" value="Save" onClick={postImage}/>
             </div>
             :
