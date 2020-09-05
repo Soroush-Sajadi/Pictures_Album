@@ -42,7 +42,7 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
         if (file !== null) {
             loadingState(true)
             fetchImage(window.localStorage.getItem('uid'), file);
-            setFile(null);
+            
         }
         
     }
@@ -55,7 +55,7 @@ const AddImage = ({profileName, numberOfImages , dataIsUpDated, loadingState}) =
             <div className="add-image-window-wrapper">
                 <img className="add-image-window-wrapper-close-image" src={closeIcon} alt="close" onClick={openAddImageFolder}/> 
                 <img className="add-image-window-wrapper-add-img" src={file === null ?addImageWindow: selectedImage} alt="add image" onClick={getUserimage}/>
-                <textarea className="add-image-window-wrapper-description" ></textarea>
+                <input type="text" className="add-image-window-wrapper-description" placeholder='Title' ></input>
                 <input className="add-image-window-wrapper-date" type="date" id="birthday" name="When"/>
                 <input className="add-image-window-wrapper-button" type="submit" value="Save" onClick={postImage}/>
             </div>

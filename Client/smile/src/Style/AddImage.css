@@ -6,7 +6,6 @@
     padding: 8vh 0;
     margin: 0 24%;
     background-color: #146db1;
-    border: outset;
     border-radius: 10px;
 }
 .add-image-window-wrapper-close-image{
@@ -19,14 +18,13 @@
     margin-top: 2vh;
     cursor: pointer;
     border-radius: 7px;
-    border: outset;
 }
 .add-image-window-wrapper-description {
-    width: 45vh;
-    height: 17vh;
+    width: 30vh;
+    height: 6vh;
     margin-top: 2vh;
     border-radius: 7px;
-    border: outset;
+    text-align: center;
 
 }
 .add-image-window-wrapper-description:focus {
@@ -37,7 +35,7 @@
     height: 6vh;
     margin-top: 2vh;
     border-radius: 7px;
-    border: outset;
+    cursor: pointer;
 
 }
 .add-image-window-wrapper-date:focus {
@@ -47,6 +45,10 @@
 .add-image-window-wrapper-button {
     margin-top: 4vh;
     border-radius: 3px;
-    border: outset;
-    width: 10vh;
+    width: 12vh;
+    height: 4vh;
+    background-color: cornflowerblue;
+    border: none;
+    font-size: 2.4vh;
+    cursor: pointer;
 }
