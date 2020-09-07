@@ -34,7 +34,7 @@
      /* position:absolute;
     top:0; 
     left:0; */
-    position:relative; 
+    /* position:relative;  */
     top:0; 
     left:0;
     
@@ -78,9 +78,25 @@
      transform: translate(-50%, -50%) */
 
 }
-.img-hover-zoom img {
-   
-  }
-  
-  /* [3] Finally, transforming the image when container gets hovered */
+/* .rendering-image-fullscreen-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rendering-image-fullscreen {
+    background-color: antiquewhite;
+    width: 100vh;
+    height: 60vh;
+
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.rendering-image-fullscreen img {
+    width: 5vh;
+    cursor: pointer;
+    
+} */
+
  

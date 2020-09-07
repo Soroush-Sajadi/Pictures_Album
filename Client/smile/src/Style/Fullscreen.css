@@ -1,0 +1,17 @@
+.fullscreen-wrapper {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 15vh;
+}
+.fullscreen-wrapper-close {
+    position: fixed;
+    width: 5vh;
+    cursor: pointer;
+    margin-top: 2vh;
+    margin-left: 48vh;
+}
+.fullscreen-wrapper-image {
+    width: 100vh;
+    height: 70vh;
+}

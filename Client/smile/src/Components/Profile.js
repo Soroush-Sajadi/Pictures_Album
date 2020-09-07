@@ -7,7 +7,7 @@ import RenderingImages from '../Components/RenderingImages';
 import '../Style/Profile.css'
 
 
-const Profile = () => {
+const Profile = ({getImageName, getImageUrl}) => {
     const [ data, setData ] = useState([]);
     const [ uid, setUid ] = useState(window.localStorage.getItem('uid'));
     const [ refetch, setRefetch ] = useState(false);
@@ -20,20 +20,6 @@ const Profile = () => {
     const loadingState = (childData) => {
         setLoading(childData);
     }
-
-    // const filter = (data) => {
-    //    if (data !== undefined) {
-           
-    //      data[0].images.map((item, i)=> {
-             
-    //         if (item === null) {
-    //              data[0].images.splice(i, 1);
-    //              console.log(data[0])
-    //         }
-    //     })
-    // }
-       
-    // }
 
     const getData = async(id) => {
         await fetch(`http://localhost:3000/data/${id}`)
@@ -51,7 +37,7 @@ const Profile = () => {
     useEffect(() => {
         getData(uid)
     },[])
-    // console.log(data)
+
     return(
         <div>
             { data.length !== 0 ? <ProfileHeader profileInfo={ data[0].map(item => [item.profileImage,item.name] )} dataIsUpDated={dataIsUpDated} loadingState={loadingState}/>: null}
@@ -75,7 +61,7 @@ const Profile = () => {
                     null}
             </div>
             }
-            {data.length !== 0 ? <RenderingImages data={data[0].map(item => item.images)} dataIsUpDated={dataIsUpDated}/> : null } 
+            {data.length !== 0 ? <RenderingImages data={data[0].map(item => item.images)} dataIsUpDated={dataIsUpDated} getSelectedImageName={getImageName} getSelectedImageUrl={getImageUrl}/> : null } 
         </div>
     )
 }
