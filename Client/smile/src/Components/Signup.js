@@ -20,6 +20,12 @@ const Signup = () => {
         setUserIn({[name]: newValue});
     }
 
+    const saveAccount = async (id, ownerName) => {
+        await fetch(`http://localhost:3000/save/${id}/${ownerName}`)
+            .then(res => res.text())
+            .then(res => setRedirect(res))
+    }
+
     const signUp = async () => {
         if (userIn.email !== '' && userIn.password !== '' && userIn.username !== '') {
             setInputError(false);
@@ -34,13 +40,16 @@ const Signup = () => {
                     username: `${userIn.username}`
                 })
             })
-                .then(res => res.text())
-                .then(res => setRedirect(res))
+                .then(res => res.json())
+                .then(res => saveAccount(res, userIn.username))
+                
                 // .then(res => res !=='Err' ? sendToken(res): setSignUpError(true))
         } else {
             setInputError(true);
         }
     }
+
+
     return(
         <div className="login-wrapper">
             {redirect === 'done' ? <Redirect to="/login"/>: null}

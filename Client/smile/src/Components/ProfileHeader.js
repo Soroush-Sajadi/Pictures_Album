@@ -48,7 +48,7 @@ const ProfileHeader = ({profileInfo, dataIsUpDated, loadingState}) => {
             <>
             <SignOut />
             </>
-            <img className="profile-img" src={profileInfo[0][0] === '' ? userImage: profileInfo[0][0]} alt="user image" onClick={getUserImage} />
+            <img className="profile-img" src={profileInfo[0][0] === undefined ? userImage: profileInfo[0][0]} alt="user image" onClick={getUserImage} />
             <h4>smile</h4>
             <input style={{display:'none'}} id='selectImage' type="file" onChange={handleChange} />
         </div> 

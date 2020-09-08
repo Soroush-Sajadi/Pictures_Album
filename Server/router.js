@@ -66,16 +66,7 @@ app.post('/signup', (req, res) => {
     firebase.auth().onAuthStateChanged(firebaseUser => {
         if (firebaseUser) {
             const uid = firebaseUser.uid;
-                const usersRef = firebase.database().ref().child(`users/${uid}`);
-                usersRef.set ([{
-                    name:`${username}`,
-                }], function (err)  {
-                    if (err) {
-                        res.end('err')
-                    } else {
-                        res.end('done')
-                    }
-                })
+                res.json(uid);
         }
     })
 })
@@ -94,6 +85,21 @@ app.get('/login/:email/:password', (req, res) => {
 app.get('/signout', (req, res) => {
     firebase.auth().signOut();
     res.json('done');
+})
+
+app.get('/save/:uid/:username', (req, res) => {
+    const uid = req.params.uid;
+    const username = req.params.username
+    const usersRef = firebase.database().ref().child(`users/${uid}`);
+        usersRef.set ([{
+            name:`${username}`,
+        }], function (err)  {
+            if (err) {
+                res.end('err')
+            } else {
+                res.end('done')
+            }
+                })
 })
 
 app.get('/data/:uid', (req, res) => {
